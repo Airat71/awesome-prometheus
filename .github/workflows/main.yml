@@ -1,12 +1,24 @@
 name: CI
+
 on:
   pull_request:
     branches: [main]
+  push:
+    branches: [main]
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
 jobs:
-  Awesome_Lint:
+  awesome-lint:
+    name: Awesome lint
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
         with:
           fetch-depth: 0
       - run: npx awesome-lint
